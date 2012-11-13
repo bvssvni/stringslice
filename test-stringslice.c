@@ -43,9 +43,22 @@ void test_stringslice_Min_1(void)
 	char *text = "start [hello]";
 	slice_char a = slice_array(text, 0, strlen(text));
 	slice_char b = stringslice_Bracket(text, '[', ']');
+	
 	slice_char min = stringslice_Min(a, b);
 	assert(min.ptr == text);
 	assert(min.len == 6);
+	
+	min = stringslice_Min(b, a);
+	assert(min.ptr == text);
+	assert(min.len == 6);
+}
+
+void test_stringslice_Min_2(void)
+{
+	slice_char a = slice_array(NULL, 0, 838);
+	slice_char b = slice_array(NULL, 0, 21);
+	slice_char min = stringslice_Min(a, b);
+	assert(min.len == 21);
 }
 
 void test_stringslice_Char_1(void)
@@ -62,7 +75,10 @@ int main(int argc, char *argv[])
 	test_stringslice_Bracket_2();
 	test_stringslice_Bracket_3();
 	test_stringslice_Min_1();
+	test_stringslice_Min_2();
 	test_stringslice_Char_1();
+	
+	printf("Finished unit tests.\n");
 	
 	return 0;
 }

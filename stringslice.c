@@ -19,15 +19,20 @@ slice_char stringslice_Bracket(char *text, char start, char end)
 
 slice_char stringslice_Min(slice_char a, slice_char b)
 {
-	if (a.ptr < b.ptr) {
-		int diff = (int)(b.ptr - a.ptr);
-		if (a.len < diff) return a;
-		return slice(a, 0, diff);
+	int diff = b.ptr - a.ptr;
+	int len = 0;
+	char *ptr;
+	if (diff == 0) {
+		ptr = a.ptr;
+		len = b.len < a.len ? b.len : a.len;
+	} else if (diff > 0) {
+		ptr = a.ptr;
+		len = diff < a.len ? diff : a.len;
 	} else {
-		int diff = (int)(a.ptr - b.ptr);
-		if (b.len < diff) return b;
-		return slice(b, 0, diff);
+		ptr = b.ptr;
+		len = -diff < b.len ? -diff : b.len;
 	}
+	return (slice_char)slice_array(ptr, 0, len);
 }
 
 slice_char stringslice_Char(char *text, char c)
